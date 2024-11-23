@@ -1,3 +1,4 @@
+import { Close } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import {
     Box,
@@ -10,8 +11,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import DialogBox from '../components/DialogBox';
-import ProductListCP from './ProductList';
 import { Product } from '../utils/Types';
+import ProductListCP from './ProductList';
 
 const ProductPicker = ({ product }: { product: Product }) => {
     const [isAddProductDialogOpen, setIsAddProductDialogOpen] = useState(false);
@@ -19,6 +20,11 @@ const ProductPicker = ({ product }: { product: Product }) => {
     const handleAddProductModal = () => {
         setIsAddProductDialogOpen(!isAddProductDialogOpen)
     }
+    const handleVariants = (id: number) => {
+        const variants = selectedProduct.variants.filter((_, index) => index !== id)
+        setSelectedProduct({ ...selectedProduct, variants })
+    }
+    console.log(selectedProduct, "selectedProduct")
     return (
         <>
             <Box sx={{ my: 2 }}>
@@ -52,19 +58,22 @@ const ProductPicker = ({ product }: { product: Product }) => {
                     <Grid xs={9}>
                     </Grid>
                     <Grid xs={3} textAlign={"start"}>
-                        <Typography marginLeft={2} component={"a"} className='pointer' onClick={() => {
-                            setSelectedProduct({ ...selectedProduct, isShow: !selectedProduct.isShow })
-                        }}>{selectedProduct.isShow ? "Hide Variants" : "Show Variants"}</Typography>
+                        <Typography hidden={(selectedProduct?.variants[0]?.id === 0) || (selectedProduct.variants.length === 0)} marginLeft={2} component={"a"} className='pointer' onClick={() => {
+                            setSelectedProduct({ ...selectedProduct, isShow: !selectedProduct?.isShow })
+                        }}>{selectedProduct?.isShow ? "Hide Variants" : "Show Variants"}</Typography>
                     </Grid>
                 </Grid>
-                {selectedProduct.isShow ? selectedProduct.variants.map((item, index) => {
-                    return < Box className="card w-75 my-2 p-2 br-50"  key={index} > {item.title} </Box >
+                {selectedProduct?.isShow ? selectedProduct?.variants?.map((item, index) => {
+                    return <div key={index} className='d-flex justify-content-space-between align-items-center'>
+                        <Box className="card w-75 my-2 p-2 br-50" key={index} > {item?.title}  </Box >
+                        <Close onClick={() => handleVariants(index)} className='pointer'> </Close>
+                    </div>
                 }) : ""}
 
                 <DialogBox onClose={handleAddProductModal} open={isAddProductDialogOpen} title='Add Product' >
                     <ProductListCP handleAddProductModal={handleAddProductModal} setShowSelectedProduct={setSelectedProduct}></ProductListCP>
                 </DialogBox>
-            </Box>
+            </Box >
         </>
     );
 };
