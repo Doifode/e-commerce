@@ -1,0 +1,24 @@
+* {
+  margin: 0%;
+  padding: 0%;
+
+}
+
+.br-0 {
+  border-radius: 0% !important;
+}
+
+.pointer {
+  cursor: pointer !important;
+}
+
+.br-50 {
+  border-radius: 50px !important;
+}
+
+.add-product-btn {
+  border: 2px solid green !important; 
+  background-color: white !important;
+  color: green !important;
+  padding: 5px 40px !important;
+}
